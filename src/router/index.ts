@@ -4,6 +4,8 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 import Products from '../views/Products.vue';
 import ProductAdmin from '../views/ProductAdmin.vue';
+import ShopAdmin from '../views/ShopAdmin.vue';
+import EditShop from '../views/EditShop.vue';
 
 Vue.use(VueRouter);
 
@@ -23,7 +25,17 @@ const routes = [
 		name: 'product-admin',
 		component: ProductAdmin
 	},
-
+	{
+		path: '/shops/admin',
+		name: 'shop-admin',
+		component: ShopAdmin
+	},
+	{
+		path: '/shops/admin/:id',
+		name: 'shop-admin-edit',
+		component: EditShop,
+		props: (route: any) => ({ id: route.params.id })
+	},
 	{
 		path: '/about',
 		name: 'about',
