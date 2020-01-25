@@ -34,7 +34,7 @@ export default createComponent({
 
     onMounted(async () => {
       if (shopId) {
-        shop.value = await shopService.getById(shopId)
+        shop.value = await shopService.getById(shopId) as any
       }
     })
 
