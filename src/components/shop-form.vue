@@ -11,6 +11,11 @@
       <textarea class="form-control" rows="3" v-model="address" @input="onChange"></textarea>
     </div>
 
+    <div class="form-group">
+      <label for="inputAddress">Shop Type</label>
+      <b-form-select v-model="shopType" :options="shopTypes" @input="onChange"></b-form-select>
+    </div>
+
     <b-form-group label="Products this shop can recycle">
       <!-- prop `add-on-change` is needed to enable adding tags vie the `change` event -->
       <b-form-tags v-model="selectedProducts" size="lg" add-on-change no-outer-focus class="mb-2" @input="onChange">
@@ -29,49 +34,80 @@
         </template>
       </b-form-tags>
     </b-form-group>
+
+    <b-form-group label-cols-lg="2" label="Opening Hours :" class="mb-0">
+      <b-form-group label-cols-sm="2" label="Open 24 Hours?:" label-align-sm="right" label-for="nested-street" id="allDay">
+        <b-form-checkbox id="checkbox-1" v-model="allDay" name="checkbox-1"></b-form-checkbox>
+      </b-form-group>
+      <b-form-group :key="openingTime.day" v-for="openingTime in openingTimes" label-cols-sm="2" :label="openingTime.day" label-align-sm="right" label-for="nested-street" v-if="!allDay">
+        <vue-timepicker @input="onChange" v-model="openingTime.from" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
+        <span class="px-2">to :</span>
+        <vue-timepicker @input="onChange" v-model="openingTime.to" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
+      </b-form-group>
+    </b-form-group>
   </div>
 </template>
 
 <script lang="ts">
-import { createComponent, ref, onMounted, computed, watch, onUpdated } from '@vue/composition-api';
+import { createComponent, ref, onMounted, computed, watch, PropType } from '@vue/composition-api';
 import ShopsService from '@/services/shopsService';
-import ProductsService from '@/services/productsService';
+import ProductsService from '@/features/products/productsService';
+import { Shop } from '../features/shops/Shop'
+import { PropOptions } from 'vue';
+// @ts-ignore
+import VueTimepicker from 'vue2-timepicker/src'
+import { OpeningTimes } from '@/features/shops/OpeningHours';
 export default createComponent({
   model: {
     prop: 'shop',
     event: 'input'
   },
   props: {
-    shop: Object
+    shop: {
+      type: Object as () => Shop,
+      required: true
+    }
   },
   components: {
+    VueTimepicker
   },
-  setup(props: any, { emit }) {
+  setup(props, { emit }) {
     const productService = new ProductsService();
     const shopService = new ShopsService();
     const options = ref<any[]>([])
     let name = ref(props.shop.name)
     let address = ref(props.shop.address)
+    let allDay = ref(false)
+    let openingTimes = ref<OpeningTimes[]>([
+      { day: 'Monday', from: '', to: '' },
+      { day: 'Tuesday', from: '', to: '' },
+      { day: 'Wednesday', from: '', to: '' },
+      { day: 'Thursday', from: '', to: '' },
+      { day: 'Friday', from: '', to: '' },
+      { day: 'Saturday', from: '', to: '' },
+      { day: 'Sunday', from: '', to: '' },
+    ]);
 
+    openingTimes.value.forEach((o) => {
+      o.from = '09:00';
+      o.to = '17:00'
+    })
+    let shopType = ref('Shop')
+    let shopTypes = ref(['Shop', 'Roadside', 'Car park', 'Community', 'Recycling Centre'])
 
     onMounted(async () => {
       options.value = await productService.getProducts();
 
     })
-
-    /*   onUpdated(() => {
-  
-  
-      }) */
-
-    let selectedProducts = ref<string>(props.shop.products)
+    let selectedProducts = ref<string[]>(props.shop.products)
     const availableOptions = computed(() => options.value.filter(opt => selectedProducts.value.indexOf(opt.name) === -1))
 
     watch(() => {
       name.value = props.shop.name;
       address.value = props.shop.address;
       selectedProducts.value = props.shop.products;
-
+      openingTimes.value = props.shop.openingTimes;
+      shopType.value = props.shop.shopType;
     })
 
 
@@ -79,14 +115,23 @@ export default createComponent({
       emit('input', {
         name: name.value,
         address: address.value,
-        products: selectedProducts.value
+        products: selectedProducts.value,
+        shopType: shopType.value,
+        openingTimes: openingTimes.value
       })
     }
 
-    return { name, address, options, selectedProducts, availableOptions, onChange }
+    return {      name, address, options, selectedProducts, availableOptions, onChange, allDay, openingTimes,
+      shopType, shopTypes    }
   }
 });
 </script>
 
-<style>
+<style lang="scss" >
+#allDay {
+  div.bv-no-focus-ring {
+    display: flex;
+    align-items: center;
+  }
+}
 </style>

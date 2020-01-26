@@ -2,8 +2,8 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
-import Products from '../views/Products.vue';
-import ProductAdmin from '../views/ProductAdmin.vue';
+import Products from '@/features/products/Products.vue';
+import ProductAdmin from '@/features/products/ProductAdmin.vue';
 import ShopAdmin from '../views/ShopAdmin.vue';
 import EditShop from '../views/EditShop.vue';
 

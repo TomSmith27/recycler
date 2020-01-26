@@ -26,21 +26,22 @@
 import { createComponent, computed, onMounted, ref } from '@vue/composition-api';
 import firebase from '@/firebase/firebase'
 import { DocumentData } from '@firebase/firestore-types';
-import ProductsService from '@/services/productsService';
+import ProductsService from './productsService';
+import { Product } from './Product'
 export default createComponent({
   components: {
   },
   setup() {
     const productsService = new ProductsService()
-    let products = ref<DocumentData[]>([])
+    let products = ref<Product[]>([])
 
     onMounted(async () => products.value = await productsService.getProducts())
 
-    function updateProduct(product: any) {
+    function updateProduct(product: Product) {
       productsService.productsCollection.doc(product.id).update({ name: product.name })
     }
 
-    async function deleteProduct(product: any) {
+    async function deleteProduct(product: Product) {
       try {
         await productsService.productsCollection.doc(product.id).delete()
         products.value = products.value.filter(p => p.id != product.id)
@@ -51,7 +52,7 @@ export default createComponent({
 
     }
 
-    let newProduct = ref({
+    let newProduct = ref<Product>({
       name: ''
     })
 

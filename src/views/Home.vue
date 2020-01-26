@@ -29,14 +29,12 @@ import db from "@/firebase/firebase";
 import Vue from "vue";
 import { createComponent, ref, computed, onMounted } from '@vue/composition-api';
 import { DocumentData } from '@firebase/firestore-types'
-import ProductsService from '../services/productsService';
+import ProductsService from '@/features/products/productsService';
 import ShopsService from '../services/shopsService';
+import { Shop } from '../features/shops/Shop';
+import { Product } from '@/features/products/Product';
 
-interface Shop {
-  name: string,
-  address: string,
-  products: string[]
-}
+
 
 export default createComponent({
   components: {
@@ -45,9 +43,9 @@ export default createComponent({
   setup() {
     const productService = new ProductsService()
     const shopsService = new ShopsService()
-    let products = ref<any[]>([])
+    let products = ref<Product[]>([])
     let selectedProduct = ref<string>(null);
-    let shops = ref<any[]>([]);
+    let shops = ref<Shop[]>([]);
 
     onMounted(async () => {
       products.value = await productService.getProducts();

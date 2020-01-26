@@ -15,6 +15,7 @@
 import { createComponent, onMounted, ref, watch } from '@vue/composition-api';
 import ShopForm from '@/components/shop-form.vue'
 import ShopsService from '../services/shopsService';
+import { Shop } from '@/features/shops/Shop';
 export default createComponent({
   components: {
     ShopForm
@@ -25,27 +26,31 @@ export default createComponent({
   setup(props, { root }) {
     let shopId = props.id
     const shopService = new ShopsService()
-    let shop = ref({
+    let shop = ref<Shop>({
       name: '',
       address: '',
-      products: []
+      products: [],
+      openingTimes: [],
+      shopType: ''
     })
 
 
     onMounted(async () => {
       if (shopId) {
-        shop.value = await shopService.getById(shopId) as any
+        shop.value = await shopService.getById(shopId) as Shop
       }
     })
 
     async function editShop() {
-      await shopService.add({
+      await shopService.update(shopId!, {
         name: shop.value.name,
         address: shop.value.address,
-        products: shop.value.products
+        products: shop.value.products,
+        shopType: shop.value.shopType,
+        openingTimes: shop.value.openingTimes
       })
 
-      root.$router.push({ name: 'home' })
+      root.$router.push({ name: 'shop-admin' })
 
     }
 
