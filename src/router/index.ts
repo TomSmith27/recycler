@@ -6,6 +6,7 @@ import Products from '@/features/products/Products.vue';
 import ProductAdmin from '@/features/products/ProductAdmin.vue';
 import ShopAdmin from '../views/ShopAdmin.vue';
 import EditShop from '../views/EditShop.vue';
+import CreateShop from '../features/shops/AddShop.vue';
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,11 @@ const routes = [
 		path: '/shops/admin',
 		name: 'shop-admin',
 		component: ShopAdmin
+	},
+	{
+		path: '/shops/create',
+		name: 'shop-create',
+		component: CreateShop
 	},
 	{
 		path: '/shops/admin/:id',

@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h1>Edit Shop</h1>
-    {{shopId}}
     <form @submit="editShop">
       <shop-form v-model="shop"></shop-form>
       <div class="d-flex justify-content-end">
@@ -26,13 +25,7 @@ export default createComponent({
   setup(props, { root }) {
     let shopId = props.id
     const shopService = new ShopsService()
-    let shop = ref<Shop>({
-      name: '',
-      address: '',
-      products: [],
-      openingTimes: [],
-      shopType: ''
-    })
+    let shop = ref<Shop>({})
 
 
     onMounted(async () => {
@@ -42,13 +35,7 @@ export default createComponent({
     })
 
     async function editShop() {
-      await shopService.update(shopId!, {
-        name: shop.value.name,
-        address: shop.value.address,
-        products: shop.value.products,
-        shopType: shop.value.shopType,
-        openingTimes: shop.value.openingTimes
-      })
+      await shopService.update(shopId!, shop.value)
 
       root.$router.push({ name: 'shop-admin' })
 

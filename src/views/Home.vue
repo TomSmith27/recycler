@@ -7,17 +7,19 @@
       </div>
       <h3>in Sheffield?</h3>
     </div>
-    <div>
-      <b-alert variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">nowhere</b-alert>
-      <b-card :title="s.name" :key="s" v-for="s in filteredShops" class>
-        <b-card-text>{{s.address}}</b-card-text>
-        <div>
-          Products:
-          <b-badge href="#" :key="product" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>
-        </div>
-        <a href="#" class="card-link">Card link</a>
-        <b-link href="#" class="card-link">Another link</b-link>
-      </b-card>
+    <div class="container">
+      <div class="d-flex">
+        <b-alert variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">nowhere</b-alert>
+        <b-card :title="s.name" :key="s" v-for="s in filteredShops">
+          <b-card-text>{{s.address}}</b-card-text>
+          <div>
+            Products:
+            <b-badge href="#" :key="product" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>
+          </div>
+          <a href="#" class="card-link">Card link</a>
+          <b-link href="#" class="card-link">Another link</b-link>
+        </b-card>
+      </div>
     </div>
   </div>
 </template>

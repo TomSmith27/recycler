@@ -36,7 +36,7 @@
     </b-form-group>
 
     <b-form-group label-cols-lg="2" label="Opening Hours :" class="mb-0">
-      <b-form-group label-cols-sm="2" label="Open 24 Hours?:" label-align-sm="right" label-for="nested-street" id="allDay">
+      <b-form-group label-cols-sm="2" label="Open 24/7?:" label-align-sm="right" label-for="nested-street" id="allDay">
         <b-form-checkbox id="checkbox-1" v-model="allDay" name="checkbox-1"></b-form-checkbox>
       </b-form-group>
       <b-form-group :key="openingTime.day" v-for="openingTime in openingTimes" label-cols-sm="2" :label="openingTime.day" label-align-sm="right" label-for="nested-street" v-if="!allDay">

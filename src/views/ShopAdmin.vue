@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <router-link :to="{name : 'shop-create'}">
+      <button type="button" class="btn btn-primary">Add Shop</button>
+    </router-link>
     <table class="table">
       <thead>
         <tr>
@@ -30,13 +33,6 @@
         </tr>
       </tbody>
     </table>
-    <h1>Create Shop</h1>
-    <form @submit="addShop">
-      <shop-form v-model="shop"></shop-form>
-      <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Save</button>
-      </div>
-    </form>
   </div>
 </template>
 
@@ -44,50 +40,18 @@
 import { createComponent, ref, computed, onMounted } from '@vue/composition-api';
 import ProductsService from '@/features/products/productsService';
 import ShopsService from '../services/shopsService';
-import ShopForm from '@/components/shop-form.vue'
 import { Shop } from '../features/shops/Shop';
 export default createComponent({
   components: {
-    ShopForm
+
   },
   setup(props, context) {
     const shopService = new ShopsService();
-    let shop = ref<Shop>({
-      name: '',
-      address: '',
-      products: [],
-      shopType: 'Shop',
-      openingTimes: [
-        { day: 'Monday', from: '', to: '' },
-        { day: 'Tuesday', from: '', to: '' },
-        { day: 'Wednesday', from: '', to: '' },
-        { day: 'Thursday', from: '', to: '' },
-        { day: 'Friday', from: '', to: '' },
-        { day: 'Saturday', from: '', to: '' },
-        { day: 'Sunday', from: '', to: '' },
-      ]
-    })
 
-
-    shop.value.openingTimes.forEach((o) => {
-      o.from = '09:00';
-      o.to = '17:00'
-    })
     let shops = ref<Shop[]>([])
     onMounted(async () => shops.value = await shopService.get())
 
-    async function addShop() {
-      await shopService.add({
-        name: shop.value.name,
-        address: shop.value.address,
-        products: shop.value.products,
-        shopType: shop.value.shopType,
-        openingTimes: shop.value.openingTimes
-      })
 
-      context.root.$router.push({ name: 'home' })
-
-    }
 
     async function deleteShop(id: string) {
       await shopService.delete(id);
@@ -96,7 +60,7 @@ export default createComponent({
 
 
 
-    return { addShop, shop, shops, deleteShop }
+    return { shops, deleteShop }
   }
 });
 </script>
