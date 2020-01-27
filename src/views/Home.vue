@@ -1,15 +1,15 @@
 <template>
-  <div style="margin-top : 45vh" class="d-flex justify-content-center flex-column align-items-center overflow-auto">
+  <div class="d-flex justify-content-center flex-column align-items-center overflow-auto home" :class="{'offset-search' : filteredShops.length == 0}">
     <div class="d-flex justify-content-center align-items-center flex-column w-100 mb-3">
       <div class="d-flex justify-content-center align-items-center w-100">
         <h3>Where can I recycle</h3>
-        <b-select class="mx-2 w-25" v-model="selectedProduct" :options="products" value-field="name" text-field="name"></b-select>
+        <b-select class="mx-2 w-25" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
       </div>
       <h3>in Sheffield?</h3>
     </div>
     <div class="container">
+      <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">Can't be recycled</b-alert>
       <div class="shops">
-        <b-alert variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">nowhere</b-alert>
         <b-card :title="s.name" :key="s" v-for="s in filteredShops">
           <b-card-text>{{s.address}}</b-card-text>
           <div>{{s.shopType}}</div>
@@ -45,10 +45,10 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import db from '@/firebase/firebase';
 import Vue from 'vue';
 import {
-    createComponent,
-    ref,
-    computed,
-    onMounted
+  createComponent,
+  ref,
+  computed,
+  onMounted
 } from '@vue/composition-api';
 import { DocumentData } from '@firebase/firestore-types';
 import ProductsService from '@/features/products/productsService';
@@ -57,49 +57,58 @@ import { Shop } from '../features/shops/Shop';
 import { Product } from '@/features/products/Product';
 
 export default createComponent({
-    components: {
-        HelloWorld
-    },
-    setup() {
-        const productService = new ProductsService();
-        const shopsService = new ShopsService();
-        let products = ref<Product[]>([]);
-        let selectedProduct = ref<string>(null);
-        let shops = ref<Shop[]>([]);
+  components: {
+    HelloWorld
+  },
+  setup() {
+    const productService = new ProductsService();
+    const shopsService = new ShopsService();
+    let products = ref<Product[]>([]);
+    const orderedProducts = computed(() => products.value.sort((a, b) => a.name > b.name ? 1 : -1))
+    let selectedProduct = ref<string>(null);
+    let shops = ref<Shop[]>([]);
 
-        onMounted(async () => {
-            products.value = await productService.getProducts();
-            shops.value = await shopsService.get();
-        });
+    onMounted(async () => {
+      products.value = await productService.getProducts();
+      shops.value = await shopsService.get();
+    });
 
-        const filteredShops = computed(() => {
-            if (selectedProduct.value != null) {
-                return shops.value
-                    .sort((a: any, b: any) => (a.name > b.name ? 1 : -1))
-                    .filter(s =>
-                        s.products.some(
-                            (i: string) =>
-                                i.toLowerCase() ==
-                                selectedProduct.value!.toLowerCase()
-                        )
-                    );
-            }
-            return [];
-        });
+    const filteredShops = computed(() => {
+      if (selectedProduct.value != null) {
+        return shops.value
+          .sort((a: any, b: any) => (a.name > b.name ? 1 : -1))
+          .filter(s =>
+            s.products.some(
+              (i: string) =>
+                i.toLowerCase() ==
+                selectedProduct.value!.toLowerCase()
+            )
+          );
+      }
+      return [];
+    });
 
-        return { products, selectedProduct, filteredShops };
-    }
+    return { orderedProducts, selectedProduct, filteredShops };
+  }
 });
 </script>
 
 <style lang="scss" scoped>
 .shops {
-    display: grid;
-    grid-gap: 5px;
+  display: grid;
+  grid-gap: 5px;
 }
 @media (min-width: 991.98px) {
-    .shops {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+  .shops {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.home {
+  transition: margin 500ms;
+  margin-top: 5vh;
+}
+.offset-search {
+  margin-top: 45vh;
 }
 </style>
