@@ -1,5 +1,5 @@
 <template>
-  <div style="height : 90vh" class="d-flex justify-content-center flex-column align-items-center overflow-auto">
+  <div style="margin-top : 45vh" class="d-flex justify-content-center flex-column align-items-center overflow-auto">
     <div class="d-flex justify-content-center align-items-center flex-column w-100 mb-3">
       <div class="d-flex justify-content-center align-items-center w-100">
         <h3>Where can I recycle</h3>
@@ -41,60 +41,65 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-import db from "@/firebase/firebase";
-import Vue from "vue";
-import { createComponent, ref, computed, onMounted } from '@vue/composition-api';
-import { DocumentData } from '@firebase/firestore-types'
+import HelloWorld from '@/components/HelloWorld.vue';
+import db from '@/firebase/firebase';
+import Vue from 'vue';
+import {
+    createComponent,
+    ref,
+    computed,
+    onMounted
+} from '@vue/composition-api';
+import { DocumentData } from '@firebase/firestore-types';
 import ProductsService from '@/features/products/productsService';
 import ShopsService from '../services/shopsService';
 import { Shop } from '../features/shops/Shop';
 import { Product } from '@/features/products/Product';
 
-
-
 export default createComponent({
-  components: {
-    HelloWorld,
-  },
-  setup() {
-    const productService = new ProductsService()
-    const shopsService = new ShopsService()
-    let products = ref<Product[]>([])
-    let selectedProduct = ref<string>(null);
-    let shops = ref<Shop[]>([]);
+    components: {
+        HelloWorld
+    },
+    setup() {
+        const productService = new ProductsService();
+        const shopsService = new ShopsService();
+        let products = ref<Product[]>([]);
+        let selectedProduct = ref<string>(null);
+        let shops = ref<Shop[]>([]);
 
-    onMounted(async () => {
-      products.value = await productService.getProducts();
-      shops.value = await shopsService.get();
-    })
+        onMounted(async () => {
+            products.value = await productService.getProducts();
+            shops.value = await shopsService.get();
+        });
 
+        const filteredShops = computed(() => {
+            if (selectedProduct.value != null) {
+                return shops.value
+                    .sort((a: any, b: any) => (a.name > b.name ? 1 : -1))
+                    .filter(s =>
+                        s.products.some(
+                            (i: string) =>
+                                i.toLowerCase() ==
+                                selectedProduct.value!.toLowerCase()
+                        )
+                    );
+            }
+            return [];
+        });
 
-    const filteredShops = computed(() => {
-      if (selectedProduct.value != null) {
-        return shops.value
-          .sort((a: any, b: any) => a.name > b.name ? 1 : -1)
-          .filter(s => s.products.some((i: string) => i.toLowerCase() == selectedProduct.value!.toLowerCase()))
-      }
-      return []
-    })
-
-    return { products, selectedProduct, filteredShops }
-
-  }
-
+        return { products, selectedProduct, filteredShops };
+    }
 });
-
 </script>
 
 <style lang="scss" scoped>
 .shops {
-  display: grid;
-  grid-gap: 5px;
+    display: grid;
+    grid-gap: 5px;
 }
 @media (min-width: 991.98px) {
-  .shops {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+    .shops {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
 </style>
