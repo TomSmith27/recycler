@@ -39,13 +39,13 @@
       <b-form-group label-cols-sm="2" label="Open 24/7?:" label-align-sm="right" id="allDay">
         <b-form-checkbox id="checkbox-1" v-model="is247" name="checkbox-1" @input="onChange"></b-form-checkbox>
       </b-form-group>
-      <b-form-group :key="openingTime.day" v-for="(openingTime, index) in openingTimes" label-cols-sm="2" :label="openingTime.day" label-align-sm="right" v-if="!is247">
+      <b-form-group :key="openingTime.day" v-for="(openingTime, index) in openingTimes" label-cols-xs="2" :label="openingTime.day" label-align-sm="right" v-if="!is247">
         <button @click="fillDown(index)" type="button" class="btn btn-primary btn-sm">
           <b-icon-arrow-bar-bottom></b-icon-arrow-bar-bottom>
         </button>
-        <vue-timepicker :disabled="openingTime.isClosed" @input="onChange" v-model="openingTime.from" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
+        <vue-timepicker :disabled="openingTime.isClosed" @input="onChange" v-model="openingTime.from" auto-scroll :minute-interval="10" close-on-complete input-width="5em"></vue-timepicker>
         <span class="px-2">to :</span>
-        <vue-timepicker :disabled="openingTime.isClosed" @input="onChange" v-model="openingTime.to" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
+        <vue-timepicker :disabled="openingTime.isClosed" @input="onChange" v-model="openingTime.to" auto-scroll :minute-interval="10" close-on-complete input-width="5em"></vue-timepicker>
         <b-form-checkbox inline v-model="openingTime.isClosed" @input="onChange">Closed</b-form-checkbox>
       </b-form-group>
     </b-form-group>
@@ -53,105 +53,129 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, onMounted, computed, watch, PropType } from '@vue/composition-api';
+import {
+    createComponent,
+    ref,
+    onMounted,
+    computed,
+    watch,
+    PropType
+} from '@vue/composition-api';
 import ShopsService from '@/services/shopsService';
 import ProductsService from '@/features/products/productsService';
-import { Shop } from '../features/shops/Shop'
+import { Shop } from '../features/shops/Shop';
 import { PropOptions } from 'vue';
 // @ts-ignore
-import VueTimepicker from 'vue2-timepicker/src'
+import VueTimepicker from 'vue2-timepicker/src';
 import { OpeningTimes } from '@/features/shops/OpeningHours';
 export default createComponent({
-  model: {
-    prop: 'shop',
-    event: 'input'
-  },
-  props: {
-    shop: {
-      type: Object as () => Shop,
-      required: true
-    }
-  },
-  components: {
-    VueTimepicker
-  },
-  setup(props, { emit }) {
-    const productService = new ProductsService();
-    const shopService = new ShopsService();
-    const options = ref<any[]>([])
-    let name = ref(props.shop.name)
-    let address = ref(props.shop.address)
-    let is247 = ref(false)
-    let openingTimes = ref<OpeningTimes[]>([
-      { day: 'Monday', from: '', to: '', isClosed: false },
-      { day: 'Tuesday', from: '', to: '', isClosed: false },
-      { day: 'Wednesday', from: '', to: '', isClosed: false },
-      { day: 'Thursday', from: '', to: '', isClosed: false },
-      { day: 'Friday', from: '', to: '', isClosed: false },
-      { day: 'Saturday', from: '', to: '', isClosed: false },
-      { day: 'Sunday', from: '', to: '', isClosed: false },
-    ]);
-
-    openingTimes.value.forEach((o) => {
-      o.from = '09:00';
-      o.to = '17:00'
-    })
-    let shopType = ref('Shop')
-    let shopTypes = ref(['Shop', 'Roadside', 'Car park', 'Community', 'Recycling Centre'])
-
-    onMounted(async () => {
-      options.value = await productService.getProducts();
-
-    })
-    let selectedProducts = ref<string[]>(props.shop.products)
-    const availableOptions = computed(() => options.value.filter(opt => selectedProducts.value.indexOf(opt.name) === -1))
-
-    watch(() => {
-      name.value = props.shop.name;
-      address.value = props.shop.address;
-      selectedProducts.value = props.shop.products;
-      openingTimes.value = props.shop.openingTimes;
-      shopType.value = props.shop.shopType;
-      is247.value = props.shop.is247;
-    })
-
-
-
-
-    const onChange = () => {
-      emit('input', {
-        name: name.value,
-        address: address.value,
-        products: selectedProducts.value,
-        shopType: shopType.value,
-        openingTimes: openingTimes.value,
-        is247: is247.value
-      })
-    }
-
-    function fillDown(index: number) {
-      var values = openingTimes.value[index];
-      openingTimes.value.forEach((value, i) => {
-        if (i > index) {
-          value.from = values.from;
-          value.to = values.to;
-          value.isClosed = values.isClosed
+    model: {
+        prop: 'shop',
+        event: 'input'
+    },
+    props: {
+        shop: {
+            type: Object as () => Shop,
+            required: true
         }
-      })
-      onChange();
-    }
+    },
+    components: {
+        VueTimepicker
+    },
+    setup(props, { emit }) {
+        const productService = new ProductsService();
+        const shopService = new ShopsService();
+        const options = ref<any[]>([]);
+        let name = ref(props.shop.name);
+        let address = ref(props.shop.address);
+        let is247 = ref(false);
+        let openingTimes = ref<OpeningTimes[]>([
+            { day: 'Monday', from: '', to: '', isClosed: false },
+            { day: 'Tuesday', from: '', to: '', isClosed: false },
+            { day: 'Wednesday', from: '', to: '', isClosed: false },
+            { day: 'Thursday', from: '', to: '', isClosed: false },
+            { day: 'Friday', from: '', to: '', isClosed: false },
+            { day: 'Saturday', from: '', to: '', isClosed: false },
+            { day: 'Sunday', from: '', to: '', isClosed: false }
+        ]);
 
-    return {      name, address, options, selectedProducts, availableOptions, onChange, is247, openingTimes,
-      shopType, shopTypes, fillDown    }
-  }
+        openingTimes.value.forEach(o => {
+            o.from = '09:00';
+            o.to = '17:00';
+        });
+        let shopType = ref('Shop');
+        let shopTypes = ref([
+            'Shop',
+            'Roadside',
+            'Car park',
+            'Community',
+            'Recycling Centre'
+        ]);
+
+        onMounted(async () => {
+            options.value = await productService.getProducts();
+        });
+        let selectedProducts = ref<string[]>(props.shop.products);
+        const availableOptions = computed(() =>
+            options.value.filter(
+                opt => selectedProducts.value.indexOf(opt.name) === -1
+            )
+        );
+
+        watch(() => {
+            name.value = props.shop.name;
+            address.value = props.shop.address;
+            selectedProducts.value = props.shop.products;
+            openingTimes.value = props.shop.openingTimes;
+            shopType.value = props.shop.shopType;
+            is247.value = props.shop.is247;
+        });
+
+        const onChange = () => {
+            emit('input', {
+                name: name.value,
+                address: address.value,
+                products: selectedProducts.value,
+                shopType: shopType.value,
+                openingTimes: openingTimes.value,
+                is247: is247.value
+            });
+        };
+
+        function fillDown(index: number) {
+            var values = openingTimes.value[index];
+            openingTimes.value.forEach((value, i) => {
+                if (i > index) {
+                    value.from = values.from;
+                    value.to = values.to;
+                    value.isClosed = values.isClosed;
+                }
+            });
+            onChange();
+        }
+
+        return {
+            name,
+            address,
+            options,
+            selectedProducts,
+            availableOptions,
+            onChange,
+            is247,
+            openingTimes,
+            shopType,
+            shopTypes,
+            fillDown
+        };
+    }
 });
 </script>
 
 <style lang="scss" >
 #allDay {
-  div.bv-no-focus-ring {
-    display: flex;
-    align-items: center;
-  }
+    div.bv-no-focus-ring {
+        display: flex;
+        align-items: center;
+    }
 }
 </style>
