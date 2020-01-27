@@ -3,8 +3,8 @@
     <div class="d-flex justify-content-center align-items-center flex-column w-100 mb-3">
       <div class="d-flex justify-content-center align-items-center w-100">
         <h3>Where can I recycle</h3>
-        <b-select class="mx-2 w-25" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
       </div>
+      <b-select class="mx-2 w-25" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
       <h3>in Sheffield?</h3>
     </div>
     <div class="container">
@@ -55,7 +55,7 @@ import ProductsService from '@/features/products/productsService';
 import ShopsService from '../services/shopsService';
 import { Shop } from '../features/shops/Shop';
 import { Product } from '@/features/products/Product';
-
+import { useProducts } from '@/features/products/useProducts'
 export default createComponent({
   components: {
     HelloWorld
@@ -63,8 +63,8 @@ export default createComponent({
   setup() {
     const productService = new ProductsService();
     const shopsService = new ShopsService();
-    let products = ref<Product[]>([]);
-    const orderedProducts = computed(() => products.value.sort((a, b) => a.name > b.name ? 1 : -1))
+
+    let { orderedProducts, products } = useProducts()
     let selectedProduct = ref<string>(null);
     let shops = ref<Shop[]>([]);
 

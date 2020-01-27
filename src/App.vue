@@ -11,6 +11,10 @@
           <b-nav-item href="#">Blogs</b-nav-item>
           <b-nav-item href="#">Bins</b-nav-item>
           <b-nav-item href="#">Composting</b-nav-item>
+          <b-nav-item-dropdown text="Admin" right>
+            <b-dropdown-item :to="{name : 'product-admin'}">Product Admin</b-dropdown-item>
+            <b-dropdown-item :to="{name : 'shop-admin'}">Shop Admin</b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

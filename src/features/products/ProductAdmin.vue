@@ -28,16 +28,14 @@ import firebase from '@/firebase/firebase'
 import { DocumentData } from '@firebase/firestore-types';
 import ProductsService from './productsService';
 import { Product } from './Product'
+import { useProducts } from "./useProducts";
 export default createComponent({
   components: {
   },
   setup() {
     const productsService = new ProductsService()
-    let products = ref<Product[]>([])
 
-    const orderedProducts = computed(() => products.value.sort((a, b) => a.name > b.name ? 1 : -1))
-    onMounted(async () => products.value = await productsService.getProducts())
-
+    let { orderedProducts, products } = useProducts()
     function updateProduct(product: Product) {
       productsService.productsCollection.doc(product.id).update({ name: product.name })
     }
