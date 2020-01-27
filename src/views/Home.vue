@@ -8,16 +8,31 @@
       <h3>in Sheffield?</h3>
     </div>
     <div class="container">
-      <div class="d-flex">
+      <div class="shops">
         <b-alert variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">nowhere</b-alert>
         <b-card :title="s.name" :key="s" v-for="s in filteredShops">
           <b-card-text>{{s.address}}</b-card-text>
+          <div>{{s.shopType}}</div>
           <div>
             Products:
             <b-badge href="#" :key="product" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>
           </div>
-          <a href="#" class="card-link">Card link</a>
-          <b-link href="#" class="card-link">Another link</b-link>
+          <div>
+            <strong>Opening Hours</strong>
+            <div v-if="!s.is247">
+              <div :key="openingTime.day" v-for="openingTime in s.openingTimes" class="d-flex">
+                <span class="mr-1" style="width : 100px">{{openingTime.day}} :</span>
+                <span v-if="openingTime.isClosed">CLOSED</span>
+                <span v-else>{{openingTime.from}} - {{openingTime.to}}</span>
+              </div>
+            </div>
+            <div v-else>
+              <em>24/7</em>
+            </div>
+          </div>
+
+          <!--   <a href="#" class="card-link">Card link</a>
+          <b-link href="#" class="card-link">Another link</b-link>-->
         </b-card>
       </div>
     </div>
@@ -71,3 +86,15 @@ export default createComponent({
 });
 
 </script>
+
+<style lang="scss" scoped>
+.shops {
+  display: grid;
+  grid-gap: 5px;
+}
+@media (min-width: 991.98px) {
+  .shops {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+</style>

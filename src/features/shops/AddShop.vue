@@ -30,13 +30,13 @@ export default createComponent({
       products: [],
       shopType: 'Shop',
       openingTimes: [
-        { day: 'Monday', from: '', to: '' },
-        { day: 'Tuesday', from: '', to: '' },
-        { day: 'Wednesday', from: '', to: '' },
-        { day: 'Thursday', from: '', to: '' },
-        { day: 'Friday', from: '', to: '' },
-        { day: 'Saturday', from: '', to: '' },
-        { day: 'Sunday', from: '', to: '' },
+        { day: 'Monday', from: '', to: '', isClosed: false },
+        { day: 'Tuesday', from: '', to: '', isClosed: false },
+        { day: 'Wednesday', from: '', to: '', isClosed: false },
+        { day: 'Thursday', from: '', to: '', isClosed: false },
+        { day: 'Friday', from: '', to: '', isClosed: false },
+        { day: 'Saturday', from: '', to: '', isClosed: false },
+        { day: 'Sunday', from: '', to: '', isClosed: false },
       ],
       is247: false
     } as Shop)

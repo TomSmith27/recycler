@@ -36,13 +36,17 @@
     </b-form-group>
 
     <b-form-group label-cols-lg="2" label="Opening Hours :" class="mb-0">
-      <b-form-group label-cols-sm="2" label="Open 24/7?:" label-align-sm="right" label-for="nested-street" id="allDay">
-        <b-form-checkbox id="checkbox-1" v-model="allDay" name="checkbox-1"></b-form-checkbox>
+      <b-form-group label-cols-sm="2" label="Open 24/7?:" label-align-sm="right" id="allDay">
+        <b-form-checkbox id="checkbox-1" v-model="is247" name="checkbox-1" @input="onChange"></b-form-checkbox>
       </b-form-group>
-      <b-form-group :key="openingTime.day" v-for="openingTime in openingTimes" label-cols-sm="2" :label="openingTime.day" label-align-sm="right" label-for="nested-street" v-if="!allDay">
-        <vue-timepicker @input="onChange" v-model="openingTime.from" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
+      <b-form-group :key="openingTime.day" v-for="(openingTime, index) in openingTimes" label-cols-sm="2" :label="openingTime.day" label-align-sm="right" v-if="!is247">
+        <button @click="fillDown(index)" type="button" class="btn btn-primary btn-sm">
+          <b-icon-arrow-bar-bottom></b-icon-arrow-bar-bottom>
+        </button>
+        <vue-timepicker :disabled="openingTime.isClosed" @input="onChange" v-model="openingTime.from" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
         <span class="px-2">to :</span>
-        <vue-timepicker @input="onChange" v-model="openingTime.to" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
+        <vue-timepicker :disabled="openingTime.isClosed" @input="onChange" v-model="openingTime.to" auto-scroll :minute-interval="10" close-on-complete input-width="15em"></vue-timepicker>
+        <b-form-checkbox inline v-model="openingTime.isClosed" @input="onChange">Closed</b-form-checkbox>
       </b-form-group>
     </b-form-group>
   </div>
@@ -77,15 +81,15 @@ export default createComponent({
     const options = ref<any[]>([])
     let name = ref(props.shop.name)
     let address = ref(props.shop.address)
-    let allDay = ref(false)
+    let is247 = ref(false)
     let openingTimes = ref<OpeningTimes[]>([
-      { day: 'Monday', from: '', to: '' },
-      { day: 'Tuesday', from: '', to: '' },
-      { day: 'Wednesday', from: '', to: '' },
-      { day: 'Thursday', from: '', to: '' },
-      { day: 'Friday', from: '', to: '' },
-      { day: 'Saturday', from: '', to: '' },
-      { day: 'Sunday', from: '', to: '' },
+      { day: 'Monday', from: '', to: '', isClosed: false },
+      { day: 'Tuesday', from: '', to: '', isClosed: false },
+      { day: 'Wednesday', from: '', to: '', isClosed: false },
+      { day: 'Thursday', from: '', to: '', isClosed: false },
+      { day: 'Friday', from: '', to: '', isClosed: false },
+      { day: 'Saturday', from: '', to: '', isClosed: false },
+      { day: 'Sunday', from: '', to: '', isClosed: false },
     ]);
 
     openingTimes.value.forEach((o) => {
@@ -108,21 +112,37 @@ export default createComponent({
       selectedProducts.value = props.shop.products;
       openingTimes.value = props.shop.openingTimes;
       shopType.value = props.shop.shopType;
+      is247.value = props.shop.is247;
     })
 
 
-    function onChange() {
+
+
+    const onChange = () => {
       emit('input', {
         name: name.value,
         address: address.value,
         products: selectedProducts.value,
         shopType: shopType.value,
-        openingTimes: openingTimes.value
+        openingTimes: openingTimes.value,
+        is247: is247.value
       })
     }
 
-    return {      name, address, options, selectedProducts, availableOptions, onChange, allDay, openingTimes,
-      shopType, shopTypes    }
+    function fillDown(index: number) {
+      var values = openingTimes.value[index];
+      openingTimes.value.forEach((value, i) => {
+        if (i > index) {
+          value.from = values.from;
+          value.to = values.to;
+          value.isClosed = values.isClosed
+        }
+      })
+      onChange();
+    }
+
+    return {      name, address, options, selectedProducts, availableOptions, onChange, is247, openingTimes,
+      shopType, shopTypes, fillDown    }
   }
 });
 </script>

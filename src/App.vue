@@ -10,7 +10,7 @@
           <b-nav-item :to="{name : 'products'}">Products A-Z</b-nav-item>
           <b-nav-item href="#">Blogs</b-nav-item>
           <b-nav-item href="#">Bins</b-nav-item>
-          <b-nav-item href="#">Compositing</b-nav-item>
+          <b-nav-item href="#">Composting</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
