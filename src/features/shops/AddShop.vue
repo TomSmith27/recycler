@@ -49,9 +49,16 @@ export default createComponent({
 
 
     async function addShop() {
-      await shopService.add(shop.value)
+      try {
+        await shopService.add(shop.value)
+        root.$router.push({ name: 'home' })
 
-      root.$router.push({ name: 'home' })
+      }
+      catch (e) {
+        console.error(e)
+        alert(e)
+      }
+
 
     }
 
