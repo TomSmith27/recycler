@@ -36,10 +36,17 @@
     </b-form-group>
 
     <b-form-group label-cols-lg="2" label="Opening Hours :" class="mb-0">
-      <b-form-group label-cols-sm="2" label="Open 24/7?:" label-align-sm="right" id="allDay">
+      <b-form-group label-cols-sm="2" label="Open 24/7?:" id="allDay">
         <b-form-checkbox id="checkbox-1" v-model="is247" name="checkbox-1" @input="onChange"></b-form-checkbox>
       </b-form-group>
-      <b-form-group :key="openingTime.day" v-for="(openingTime, index) in openingTimes" label-cols-xs="2" :label="openingTime.day" label-align-sm="right" v-if="!is247">
+      <b-form-group label-cols-sm="3" label="External Opening Hours:" id="allDay">
+        <b-form-checkbox id="externalOpeningHours" v-model="externalOpeningHours" name="checkbox-1" @input="onChange"></b-form-checkbox>
+        <div class="form-group" v-if="externalOpeningHours">
+          <label for>Website</label>
+          <input type="text" class="form-control" v-model="externalWebsite" @input="onChange" />
+        </div>
+      </b-form-group>
+      <b-form-group :key="openingTime.day" v-for="(openingTime, index) in openingTimes" label-cols-xs="2" :label="openingTime.day" v-if="!is247 && !externalOpeningHours">
         <button @click="fillDown(index)" type="button" class="btn btn-primary btn-sm">
           <b-icon-arrow-bar-bottom></b-icon-arrow-bar-bottom>
         </button>
@@ -90,6 +97,8 @@ export default createComponent({
     let name = ref(props.shop.name);
     let address = ref(props.shop.address);
     let is247 = ref(false);
+    let externalOpeningHours = ref(false);
+    let externalWebsite = ref('');
     let openingTimes = ref<OpeningTimes[]>([
       { day: 'Monday', from: '', to: '', isClosed: false },
       { day: 'Tuesday', from: '', to: '', isClosed: false },
@@ -131,6 +140,8 @@ export default createComponent({
       openingTimes.value = props.shop.openingTimes;
       shopType.value = props.shop.shopType;
       is247.value = props.shop.is247;
+      externalOpeningHours.value = props.shop.externalOpeningHours;
+      externalWebsite.value = props.shop.externalWebsite;
     });
 
     const onChange = () => {
@@ -140,7 +151,9 @@ export default createComponent({
         products: selectedProducts.value,
         shopType: shopType.value,
         openingTimes: openingTimes.value,
-        is247: is247.value
+        is247: is247.value,
+        externalOpeningHours: externalOpeningHours.value,
+        externalWebsite: externalWebsite.value
       });
     };
 
@@ -167,7 +180,9 @@ export default createComponent({
       openingTimes,
       shopType,
       shopTypes,
-      fillDown
+      fillDown,
+      externalOpeningHours,
+      externalWebsite
     };
   }
 });

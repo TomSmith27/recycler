@@ -8,4 +8,6 @@ export interface Shop {
 	shopType: string;
 	openingTimes: OpeningTimes[];
 	is247: boolean;
+	externalOpeningHours: boolean;
+	externalWebsite: string;
 }

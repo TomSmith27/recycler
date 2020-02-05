@@ -38,7 +38,9 @@ export default createComponent({
         { day: 'Saturday', from: '', to: '', isClosed: false },
         { day: 'Sunday', from: '', to: '', isClosed: false },
       ],
-      is247: false
+      is247: false,
+      externalOpeningHours: false,
+      externalWebsite: ''
     } as Shop)
 
 

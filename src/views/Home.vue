@@ -18,15 +18,18 @@
           </div>
           <div>
             <strong>Opening Hours</strong>
-            <div v-if="!s.is247">
+            <div v-if="s.is247">
+              <em>24/7</em>
+            </div>
+            <div v-else-if="s.externalOpeningHours">
+              <a target="_blank" :href="s.externalWebsite">Click here for Opening Hours</a>
+            </div>
+            <div v-else>
               <div :key="openingTime.day" v-for="openingTime in s.openingTimes" class="d-flex">
                 <span class="mr-1" style="width : 100px">{{openingTime.day}} :</span>
                 <span v-if="openingTime.isClosed">CLOSED</span>
                 <span v-else>{{openingTime.from}} - {{openingTime.to}}</span>
               </div>
-            </div>
-            <div v-else>
-              <em>24/7</em>
             </div>
           </div>
 
