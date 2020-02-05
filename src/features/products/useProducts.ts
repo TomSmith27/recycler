@@ -5,7 +5,12 @@ import ProductsService from './productsService';
 export function useProducts() {
 	const productService = new ProductsService();
 	let products = ref<Product[]>([]);
-	onMounted(async () => (products.value = await productService.getProducts()));
-	const orderedProducts = computed(() => products.value.sort((a, b) => (a.name > b.name ? 1 : -1)));
+	const orderedProducts = computed(() =>
+		products.value.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
+	);
+	onMounted(async () => {
+		products.value = await productService.getProducts();
+		products.value = [ ...orderedProducts.value ];
+	});
 	return { orderedProducts, products };
 }

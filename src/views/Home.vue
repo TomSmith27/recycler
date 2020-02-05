@@ -12,7 +12,6 @@
       <div class="shops">
         <b-card :title="s.name" :key="s" v-for="s in filteredShops">
           <b-card-text>{{s.address}}</b-card-text>
-          <div>{{s.shopType}}</div>
           <div>
             Products:
             <b-badge href="#" :key="product" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>

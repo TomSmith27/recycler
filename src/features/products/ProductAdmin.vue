@@ -4,7 +4,7 @@
 
     <div class="container">
       <transition-group name="list">
-        <div class="input-group mb-3" :key="product.name" v-for="product in orderedProducts">
+        <div class="input-group mb-3" :key="index" v-for="(product, index) in products">
           <input type="text" class="form-control" v-model="product.name" />
           <div class="input-group-append">
             <button class="btn btn-outline-primary" type="button" @click="updateProduct(product)">Update</button>
@@ -36,9 +36,13 @@ export default createComponent({
     const productsService = new ProductsService()
 
     let { orderedProducts, products } = useProducts()
+
     function updateProduct(product: Product) {
       productsService.productsCollection.doc(product.id).update({ name: product.name })
+      products.value = [...orderedProducts.value];
     }
+
+
 
     async function deleteProduct(product: Product) {
       try {
@@ -70,7 +74,7 @@ export default createComponent({
     }
 
 
-    return { newProduct, updateProduct, deleteProduct, addProduct, orderedProducts }
+    return { newProduct, updateProduct, deleteProduct, addProduct, products }
 
 
   }
