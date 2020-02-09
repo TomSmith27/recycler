@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr :key="shop.id" v-for="shop in shops">
+        <tr :key="shop.id" v-for="shop in orderedShops">
           <td>{{shop.name}}</td>
           <td>{{shop.address}}</td>
           <td>
@@ -57,10 +57,12 @@ export default createComponent({
       await shopService.delete(id);
       shops.value = shops.value.filter((f: any) => f.id != id)
     }
+    let orderedShops = computed(() =>
+      shops.value.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
+    );
 
 
-
-    return { shops, deleteShop }
+    return { orderedShops, deleteShop }
   }
 });
 </script>
