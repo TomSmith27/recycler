@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-center align-items-center w-100">
         <h3>Where can I recycle</h3>
       </div>
-      <b-select class="mx-2 w-25" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
+      <b-select class="mx-2 w-75" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
       <h3>in Sheffield?</h3>
     </div>
     <div class="container">
