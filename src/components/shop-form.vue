@@ -37,10 +37,10 @@
 
     <b-form-group label-cols-lg="2" label="Opening Hours :" class="mb-0">
       <b-form-group label-cols-sm="2" label="Open 24/7?:" id="allDay">
-        <b-form-checkbox id="checkbox-1" v-model="is247" name="checkbox-1" @input="onChange"></b-form-checkbox>
+        <b-form-checkbox  v-model="is247" name="checkbox-1" @input="onChange"></b-form-checkbox>
       </b-form-group>
       <b-form-group label-cols-sm="3" label="External Opening Hours:" id="allDay">
-        <b-form-checkbox id="externalOpeningHours" v-model="externalOpeningHours" name="checkbox-1" @input="onChange"></b-form-checkbox>
+        <b-form-checkbox id="externalOpeningHours" v-model="externalOpeningHours"  @input="onChange"></b-form-checkbox>
         <div class="form-group" v-if="externalOpeningHours">
           <label for>Website</label>
           <input type="text" class="form-control" v-model="externalWebsite" @input="onChange" />

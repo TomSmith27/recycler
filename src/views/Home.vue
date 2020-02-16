@@ -10,10 +10,13 @@
     <div class="container">
       <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">Can't be recycled</b-alert>
       <div class="shops">
-        <b-card :title="s.name" :key="s" v-for="s in filteredShops">
-          <b-card-text>{{s.address}}</b-card-text>
+        <b-card class="shadow mb-2" :title="s.name" :key="s" v-for="s in filteredShops">
+          <b-card-text>
+            <a v-if="!s.address.includes('See website')" target="_blank" :href="mapUrl(s)">{{s.address}}</a>
+            <span v-else>{{s.address}}</span>
+          </b-card-text>
           <div>
-            Products:
+            <p>Products:</p>
             <b-badge href="#" :key="product" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>
           </div>
           <div>
@@ -90,7 +93,11 @@ export default createComponent({
       return [];
     });
 
-    return { orderedProducts, selectedProduct, filteredShops };
+    let mapUrl = (shop: Shop) => {
+      return `http://maps.google.com/?q=${shop.address}`;
+    }
+
+    return { orderedProducts, selectedProduct, filteredShops, mapUrl };
   }
 });
 </script>

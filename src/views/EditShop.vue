@@ -1,12 +1,14 @@
 <template>
   <div class="container">
-    <h1>Edit Shop</h1>
-    <form @submit="editShop">
-      <shop-form v-model="shop"></shop-form>
-      <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Save</button>
-      </div>
-    </form>
+    <div class="card m-2 p-4 shadow">
+      <h1>Edit Shop</h1>
+      <form @submit.prevent="editShop">
+        <shop-form v-model="shop"></shop-form>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
