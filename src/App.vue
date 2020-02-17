@@ -7,10 +7,14 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="text-right">
-          <b-nav-item :to="{name : 'products'}">Products A-Z</b-nav-item>
-          <b-nav-item href="#">Blogs</b-nav-item>
+          <b-nav-item-dropdown text="Products" right>
+            <b-dropdown-item :to="{name : 'products'}">Products A-Z</b-dropdown-item>
+            <b-dropdown-item :to="{name : 'locations'}">Categories</b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item>Locations A-Z</b-nav-item>
+          <!--    <b-nav-item href="#">Blogs</b-nav-item>
           <b-nav-item href="#">Bins</b-nav-item>
-          <b-nav-item href="#">Composting</b-nav-item>
+          <b-nav-item href="#">Composting</b-nav-item>-->
           <b-nav-item-dropdown text="Admin" right>
             <b-dropdown-item :to="{name : 'product-admin'}">Product Admin</b-dropdown-item>
             <b-dropdown-item :to="{name : 'shop-admin'}">Shop Admin</b-dropdown-item>

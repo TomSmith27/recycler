@@ -9,13 +9,12 @@
               <h3 class="text-primary">{{group.group}}</h3>
               <ul>
                 <div :key="product.id" v-for="product in group.products">
-                  <b-badge href="#" class="big-badge" variant="primary">{{product.name}}</b-badge>
+                  <b-badge :to="{name : 'home', query : { product : product.name }}" class="big-badge" variant="primary">{{product.name}}</b-badge>
                 </div>
               </ul>
             </li>
           </ul>
         </div>
-        <div class="col-md-6">SHOPS</div>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="m-3">
     <div class="p-2">
       <router-link :to="{name : 'shop-create'}">
         <button type="button" class="btn btn-primary btn-block">Add Shop</button>

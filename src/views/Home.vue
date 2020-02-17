@@ -7,33 +7,41 @@
       <b-select class="mx-2 w-75" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
       <h3>in Sheffield?</h3>
     </div>
+
     <div class="container">
       <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">Can't be recycled</b-alert>
       <div class="shops">
-        <b-card class="shadow mb-2" :title="s.name" :key="s" v-for="s in filteredShops">
+        <b-card class="shadow mb-2" :title="s.name" :key="s.id" v-for="s in filteredShops">
           <b-card-text>
             <a v-if="!s.address.includes('See website')" target="_blank" :href="mapUrl(s)">{{s.address}}</a>
             <span v-else>{{s.address}}</span>
           </b-card-text>
           <div>
             <p>Products:</p>
-            <b-badge href="#" :key="product" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>
+            <b-badge href="#" :key="product.name" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>
           </div>
           <div>
-            <strong>Opening Hours</strong>
-            <div v-if="s.is247">
-              <em>24/7</em>
-            </div>
-            <div v-else-if="s.externalOpeningHours">
-              <a target="_blank" :href="s.externalWebsite">Click here for Opening Hours</a>
-            </div>
-            <div v-else>
-              <div :key="openingTime.day" v-for="openingTime in s.openingTimes" class="d-flex">
-                <span class="mr-1" style="width : 100px">{{openingTime.day}} :</span>
-                <span v-if="openingTime.isClosed">CLOSED</span>
-                <span v-else>{{openingTime.from}} - {{openingTime.to}}</span>
+            <button class="btn btn-outline-primary btn-block" v-b-toggle="`opening-hours-${s.id}`">
+              Opening Hours
+              <b-icon-chevron-compact-down />
+            </button>
+            <b-collapse :id="`opening-hours-${s.id}`" class="border-top-0 border border-primary p-2">
+              <div class="d-flex justify-content-center">
+                <div v-if="s.is247">
+                  <em>24/7</em>
+                </div>
+                <div v-else-if="s.externalOpeningHours">
+                  <a target="_blank" :href="s.externalWebsite">Click here for Opening Hours</a>
+                </div>
+                <div v-else>
+                  <div :key="openingTime.day" v-for="openingTime in s.openingTimes" class="d-flex">
+                    <span class="mr-1" style="width : 100px">{{openingTime.day}} :</span>
+                    <span v-if="openingTime.isClosed">CLOSED</span>
+                    <span v-else>{{openingTime.from}} - {{openingTime.to}}</span>
+                  </div>
+                </div>
               </div>
-            </div>
+            </b-collapse>
           </div>
 
           <!--   <a href="#" class="card-link">Card link</a>
@@ -65,12 +73,18 @@ export default createComponent({
   components: {
     HelloWorld
   },
-  setup() {
+  setup(props, context) {
     const productService = new ProductsService();
     const shopsService = new ShopsService();
 
     let { orderedProducts, products } = useProducts()
     let selectedProduct = ref<string>(null);
+
+    var routeProduct = context.root.$router.currentRoute.query["product"];
+    if (routeProduct != undefined && routeProduct != null) {
+      selectedProduct.value = routeProduct as string;
+    }
+
     let shops = ref<Shop[]>([]);
 
     onMounted(async () => {
