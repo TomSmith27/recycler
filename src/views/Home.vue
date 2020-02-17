@@ -9,7 +9,7 @@
     </div>
 
     <div class="container">
-      <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null">Can't be recycled</b-alert>
+      <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null && !isLoading">Can't be recycled</b-alert>
       <div class="shops">
         <b-card class="shadow mb-2" :title="s.name" :key="s.id" v-for="s in filteredShops">
           <b-card-text>
@@ -86,10 +86,12 @@ export default createComponent({
     }
 
     let shops = ref<Shop[]>([]);
-
+    let isLoading = ref(true)
     onMounted(async () => {
+      isLoading.value = true;
       products.value = await productService.getProducts();
       shops.value = await shopsService.get();
+      isLoading.value = false;
     });
 
     const filteredShops = computed(() => {
@@ -111,7 +113,7 @@ export default createComponent({
       return `http://maps.google.com/?q=${shop.address}`;
     }
 
-    return { orderedProducts, selectedProduct, filteredShops, mapUrl };
+    return { orderedProducts, selectedProduct, filteredShops, mapUrl, isLoading };
   }
 });
 </script>
