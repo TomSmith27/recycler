@@ -18,7 +18,7 @@ export default new Vuex.Store({
 		LOGIN({ commit }) {
 			window.localStorage.setItem('recycle-user', 'poppy');
 			commit('setUser', {
-				email: 'poppy'
+				email: 'Poppy'
 			});
 		},
 		LOGOUT({ commit }) {

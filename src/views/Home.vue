@@ -1,52 +1,60 @@
 <template>
-  <div class="d-flex justify-content-center flex-column align-items-center overflow-auto home" :class="{'offset-search' : filteredShops.length == 0}">
-    <div class="d-flex justify-content-center align-items-center flex-column w-100 mb-3">
-      <div class="d-flex justify-content-center align-items-center w-100">
-        <h3>Where can I recycle</h3>
+  <div>
+    <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height : 90vh">
+      <div class="d-flex flex-column justify-content-center align-items-center">
+        <b-spinner variant="primary" style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+        <h1 class="text-primary">Loading...</h1>
       </div>
-      <b-select class="mx-2 w-75" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
-      <h3>in Sheffield?</h3>
     </div>
+    <div v-else class="d-flex justify-content-center flex-column align-items-center overflow-auto home" :class="{'offset-search' : filteredShops.length == 0}">
+      <div class="d-flex justify-content-center align-items-center flex-column w-100 mb-3">
+        <div class="d-flex justify-content-center align-items-center w-100">
+          <h3>Where can I recycle</h3>
+        </div>
+        <b-select class="mx-2 w-75" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
+        <h3>in Sheffield?</h3>
+      </div>
 
-    <div class="container">
-      <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null && !isLoading">Can't be recycled</b-alert>
-      <div class="shops">
-        <b-card class="shadow mb-2" :title="s.name" :key="s.id" v-for="s in filteredShops">
-          <b-card-text>
-            <a v-if="!s.address.includes('See website')" target="_blank" :href="mapUrl(s)">{{s.address}}</a>
-            <span v-else>{{s.address}}</span>
-          </b-card-text>
-          <div>
-            <p>Products:</p>
-            <b-badge href="#" :key="product.name" v-for="product in s.products" variant="primary" class="m-1">{{product}}</b-badge>
-          </div>
-          <div>
-            <button class="btn btn-outline-primary btn-block" v-b-toggle="`opening-hours-${s.id}`">
-              Opening Hours
-              <b-icon-chevron-compact-down />
-            </button>
-            <b-collapse :id="`opening-hours-${s.id}`" class="border-top-0 border border-primary p-2">
-              <div class="d-flex justify-content-center">
-                <div v-if="s.is247">
-                  <em>24/7</em>
-                </div>
-                <div v-else-if="s.externalOpeningHours">
-                  <a target="_blank" :href="s.externalWebsite">Click here for Opening Hours</a>
-                </div>
-                <div v-else>
-                  <div :key="openingTime.day" v-for="openingTime in s.openingTimes" class="d-flex">
-                    <span class="mr-1" style="width : 100px">{{openingTime.day}} :</span>
-                    <span v-if="openingTime.isClosed">CLOSED</span>
-                    <span v-else>{{openingTime.from}} - {{openingTime.to}}</span>
+      <div class="container">
+        <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null && !isLoading">Can't be recycled</b-alert>
+        <div class="shops">
+          <b-card class="shadow mb-2" :title="s.name" :key="s.id" v-for="s in filteredShops">
+            <b-card-text>
+              <a v-if="!s.address.includes('See website')" target="_blank" :href="mapUrl(s)">{{s.address}}</a>
+              <span v-else>{{s.address}}</span>
+            </b-card-text>
+            <div>
+              <p>Products:</p>
+              <b-badge :key="product.name" v-for="product in s.products" variant="primary" class="m-1 white-space-norml">{{product}}</b-badge>
+            </div>
+            <div>
+              <button class="btn btn-outline-primary btn-block" v-b-toggle="`opening-hours-${s.id}`">
+                Opening Hours
+                <b-icon-chevron-compact-down />
+              </button>
+              <b-collapse :id="`opening-hours-${s.id}`" class="border-top-0 border border-primary p-2">
+                <div class="d-flex justify-content-center">
+                  <div v-if="s.is247">
+                    <em>24/7</em>
+                  </div>
+                  <div v-else-if="s.externalOpeningHours">
+                    <a target="_blank" :href="s.externalWebsite">Click here for Opening Hours</a>
+                  </div>
+                  <div v-else>
+                    <div :key="openingTime.day" v-for="openingTime in s.openingTimes" class="d-flex">
+                      <span class="mr-1" style="width : 100px">{{openingTime.day}} :</span>
+                      <span v-if="openingTime.isClosed">CLOSED</span>
+                      <span v-else>{{openingTime.from}} - {{openingTime.to}}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </b-collapse>
-          </div>
+              </b-collapse>
+            </div>
 
-          <!--   <a href="#" class="card-link">Card link</a>
-          <b-link href="#" class="card-link">Another link</b-link>-->
-        </b-card>
+            <!--   <a href="#" class="card-link">Card link</a>
+            <b-link href="#" class="card-link">Another link</b-link>-->
+          </b-card>
+        </div>
       </div>
     </div>
   </div>

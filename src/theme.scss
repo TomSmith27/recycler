@@ -7,6 +7,10 @@ $body-color : #36454F;
 @import 'node_modules/bootstrap-vue/src/index.scss';
 @import '~vue2-timepicker/dist/VueTimepicker.css';
 
+.white-space-norml {
+  white-space: normal;
+}
+
 
 .big-badge {
   padding: $spacer * .5;

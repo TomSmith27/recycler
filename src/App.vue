@@ -5,13 +5,16 @@
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
+      <b-collapse v-model="navOpen" id="nav-collapse" is-nav>
         <b-navbar-nav class="text-right">
           <b-nav-item-dropdown text="Products" right>
-            <b-dropdown-item :to="{name : 'products'}">Products A-Z</b-dropdown-item>
+            <b-dropdown-item :to="{name : 'products'}">A-Z</b-dropdown-item>
             <b-dropdown-item :to="{name : 'locations'}">Categories</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item>Locations A-Z</b-nav-item>
+          <b-nav-item-dropdown text="Locations" right>
+            <b-dropdown-item>A-Z</b-dropdown-item>
+            <b-dropdown-item>Categories</b-dropdown-item>
+          </b-nav-item-dropdown>
           <!--    <b-nav-item href="#">Blogs</b-nav-item>
           <b-nav-item href="#">Bins</b-nav-item>
           <b-nav-item href="#">Composting</b-nav-item>-->
@@ -20,35 +23,38 @@
             <b-dropdown-item :to="{name : 'shop-admin'}">Shop Admin</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
+        <b-navbar-nav class="ml-auto text-right">
+          <b-nav-item class="d-flex align-items-center">
+            <small>{{ version }}</small>
+          </b-nav-item>
+          <b-nav-item v-if="!isLoggedIn">
+            <b-button v-b-modal.login-modal variant="outline-primary">Login</b-button>
+            <b-modal hide-footer title="Login" centered id="login-modal">
+              <b-form @submit.prevent="onSubmit">
+                <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
+                  <b-form-input id="input-1" v-model="form.email" type="email" required></b-form-input>
+                </b-form-group>
+
+                <b-form-group id="input-group-2" label="Password" label-for="input-2">
+                  <b-form-input id="input-2" v-model="form.password" type="password" required></b-form-input>
+                </b-form-group>
+
+                <div class="d-flex justify-content-between w-100">
+                  <button class="btn btn-secondary" type="button" @click="$bvModal.hide('login-modal')">Cancel</button>
+                  <button class="btn btn-primary" type="submit">Login</button>
+                </div>
+              </b-form>
+            </b-modal>
+          </b-nav-item>
+          <b-nav-item-dropdown v-else right>
+            <!-- Using 'button-content' slot -->
+            <template v-slot:button-content>
+              <em>{{user.email}}</em>
+            </template>
+            <b-dropdown-item @click="logout">Log out</b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
       </b-collapse>
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item v-if="!isLoggedIn">
-          <b-button v-b-modal.login-modal variant="primary">Login</b-button>
-          <b-modal hide-footer title="Login" centered id="login-modal">
-            <b-form @submit.prevent="onSubmit">
-              <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
-                <b-form-input id="input-1" v-model="form.email" type="email" required></b-form-input>
-              </b-form-group>
-
-              <b-form-group id="input-group-2" label="Password" label-for="input-2">
-                <b-form-input id="input-2" v-model="form.password" type="password" required></b-form-input>
-              </b-form-group>
-
-              <div class="d-flex justify-content-between w-100">
-                <button class="btn btn-secondary" type="button" @click="$bvModal.hide('login-modal')">Cancel</button>
-                <button class="btn btn-primary" type="submit">Login</button>
-              </div>
-            </b-form>
-          </b-modal>
-        </b-nav-item>
-        <b-nav-item-dropdown v-else right>
-          <!-- Using 'button-content' slot -->
-          <template v-slot:button-content>
-            <em>{{user.email}}</em>
-          </template>
-          <b-dropdown-item @click="logout">Log out</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
     </b-navbar>
     <router-view></router-view>
   </div>
@@ -58,20 +64,30 @@
 import Vue from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
 import { mapGetters } from 'vuex';
+const packageInfo = require('../package.json')
 export default Vue.extend({
   name: 'app',
   components: {
     HelloWorld,
   },
   computed: {
-    ...mapGetters(['isLoggedIn', 'user'])
+    ...mapGetters(['isLoggedIn', 'user']),
+    version() {
+      return packageInfo.version
+    }
   },
   data() {
     return {
+      navOpen: false,
       form: {
         email: '',
         password: '',
       },
+    }
+  },
+  watch: {
+    '$route': function () {
+      this.navOpen = false;
     }
   },
   created() {
