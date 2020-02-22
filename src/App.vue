@@ -18,7 +18,7 @@
           <b-nav-item :to="{name : 'bins' }">Bins</b-nav-item>
           <b-nav-item :to="{name : 'about' }">About</b-nav-item>
           <b-nav-item :to="{name : 'news' }">News</b-nav-item>
-          <b-nav-item :to="{name : 'tips' }">Did you know?</b-nav-item>
+          <b-nav-item :to="{name : 'did-you-know' }">Did you know?</b-nav-item>
 
           <!--    <b-nav-item href="#">Blogs</b-nav-item>
           <b-nav-item href="#">Bins</b-nav-item>
@@ -29,7 +29,7 @@
           </b-nav-item-dropdown>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto text-right">
-          <b-nav-item class="d-flex align-items-center">
+          <b-nav-item>
             <small>{{ version }}</small>
           </b-nav-item>
           <b-nav-item v-if="!isLoggedIn">
@@ -118,4 +118,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+body {
+  background-color: #fcfcfa !important;
+}
 </style>

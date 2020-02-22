@@ -7,19 +7,21 @@
       </div>
     </div>
     <div v-else class="d-flex justify-content-center flex-column align-items-center overflow-auto home" :class="{'offset-search' : filteredShops.length == 0}">
-      <div class="d-flex justify-content-center align-items-center flex-column w-100 mb-3">
-        <div class="d-flex justify-content-center align-items-center w-100 mb-1">
-          <h3>Where can I recycle</h3>
+      <div class="container-fluid">
+        <div class="d-flex justify-content-center align-items-center flex-column mb-3 bg-white border shadow-sm p-2">
+          <div class="d-flex justify-content-center align-items-center w-100 mb-1">
+            <h3>Where can I recycle</h3>
+          </div>
+          <b-select class="mx-2 w-75 mb-2" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
+          <h3>in Sheffield?</h3>
         </div>
-        <b-select class="mx-2 w-75 mb-2" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
-        <h3>in Sheffield?</h3>
       </div>
       <b-alert :show="filteredShops.length == 0" variant="success" class="text-center m-2">
         <b-icon icon="info-square" class="mr-3" scale="1.5"></b-icon>
         <strong>Top Tip</strong> : Did you know that corks can be composted?
       </b-alert>
 
-      <div class="container">
+      <div class="container-fluid">
         <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null && !isLoading">Can't be recycled</b-alert>
         <div class="shops">
           <b-card class="shadow mb-2" :key="s.id" v-for="s in filteredShops">

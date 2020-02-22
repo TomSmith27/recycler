@@ -8,6 +8,7 @@ import ShopAdmin from '../views/ShopAdmin.vue';
 import EditShop from '../views/EditShop.vue';
 import Shops from '@/features/shops/Shops.vue';
 import Bins from '../views/Bins.vue';
+import DidYouKnow from '../views/DidYouKnow.vue';
 import CreateShop from '../features/shops/AddShop.vue';
 
 Vue.use(VueRouter);
@@ -47,6 +48,11 @@ const routes = [
 		path: '/bins',
 		name: 'bins',
 		component: Bins
+	},
+	{
+		path: '/did-you-know',
+		name: 'did-you-know',
+		component: DidYouKnow
 	},
 	{
 		path: '/shops/admin/:id',
