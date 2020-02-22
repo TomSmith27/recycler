@@ -1,15 +1,15 @@
 <template>
   <div id="app">
     <b-navbar toggleable="lg" type="light" sticky class="bg-white shadow-sm">
-      <b-navbar-brand tag="h1" class="mb-0" :to="{name : 'home'}">The Recycle Guide</b-navbar-brand>
+      <b-navbar-brand tag="h1" class="mb-0" :to="{ name: 'home' }">The Recycle Guide</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse v-model="navOpen" id="nav-collapse" is-nav>
         <b-navbar-nav class="text-right">
           <b-nav-item-dropdown text="Products" right>
-            <b-dropdown-item :to="{name : 'products'}">A-Z</b-dropdown-item>
-            <b-dropdown-item :to="{name : 'locations'}">Categories</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'products' }">A-Z</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'categories' }">Categories</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Locations" right>
             <b-dropdown-item>A-Z</b-dropdown-item>
@@ -19,8 +19,8 @@
           <b-nav-item href="#">Bins</b-nav-item>
           <b-nav-item href="#">Composting</b-nav-item>-->
           <b-nav-item-dropdown v-if="isLoggedIn" text="Admin" right>
-            <b-dropdown-item :to="{name : 'product-admin'}">Product Admin</b-dropdown-item>
-            <b-dropdown-item :to="{name : 'shop-admin'}">Shop Admin</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'product-admin' }">Product Admin</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'shop-admin' }">Shop Admin</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto text-right">
@@ -49,7 +49,7 @@
           <b-nav-item-dropdown v-else right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
-              <em>{{user.email}}</em>
+              <em>{{ user.email }}</em>
             </template>
             <b-dropdown-item @click="logout">Log out</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -64,16 +64,16 @@
 import Vue from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
 import { mapGetters } from 'vuex';
-const packageInfo = require('../package.json')
+const packageInfo = require('../package.json');
 export default Vue.extend({
   name: 'app',
   components: {
-    HelloWorld,
+    HelloWorld
   },
   computed: {
     ...mapGetters(['isLoggedIn', 'user']),
     version() {
-      return packageInfo.version
+      return packageInfo.version;
     }
   },
   data() {
@@ -81,12 +81,12 @@ export default Vue.extend({
       navOpen: false,
       form: {
         email: '',
-        password: '',
-      },
-    }
+        password: ''
+      }
+    };
   },
   watch: {
-    '$route': function () {
+    $route: function() {
       this.navOpen = false;
     }
   },
@@ -95,21 +95,19 @@ export default Vue.extend({
     if (user != undefined) {
       this.$store.commit('setUser', {
         email: user
-      })
+      });
     }
   },
   methods: {
     logout() {
-      this.$store.dispatch('LOGOUT')
+      this.$store.dispatch('LOGOUT');
     },
     async onSubmit() {
-      await this.$store.dispatch('LOGIN')
-      this.$bvModal.hide('login-modal')
-    },
-
+      await this.$store.dispatch('LOGIN');
+      this.$bvModal.hide('login-modal');
+    }
   }
 });
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

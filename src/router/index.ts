@@ -3,6 +3,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 import Products from '@/features/products/Products.vue';
+import Categories from '@/features/categories/Categories.vue';
 import ProductAdmin from '@/features/products/ProductAdmin.vue';
 import ShopAdmin from '../views/ShopAdmin.vue';
 import EditShop from '../views/EditShop.vue';
@@ -11,50 +12,55 @@ import CreateShop from '../features/shops/AddShop.vue';
 Vue.use(VueRouter);
 
 const routes = [
-	{
-		path: '/',
-		name: 'home',
-		component: Home
-	},
-	{
-		path: '/products',
-		name: 'products',
-		component: Products
-	},
-	{
-		path: '/products/admin',
-		name: 'product-admin',
-		component: ProductAdmin
-	},
-	{
-		path: '/shops/admin',
-		name: 'shop-admin',
-		component: ShopAdmin
-	},
-	{
-		path: '/shops/create',
-		name: 'shop-create',
-		component: CreateShop
-	},
-	{
-		path: '/shops/admin/:id',
-		name: 'shop-admin-edit',
-		component: EditShop,
-		props: (route: any) => ({ id: route.params.id })
-	},
-	{
-		path: '/about',
-		name: 'about',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-	}
+  {
+    path: '/',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/products',
+    name: 'products',
+    component: Products
+  },
+  {
+    path: '/categories',
+    name: 'categories',
+    component: Categories
+  },
+  {
+    path: '/products/admin',
+    name: 'product-admin',
+    component: ProductAdmin
+  },
+  {
+    path: '/shops/admin',
+    name: 'shop-admin',
+    component: ShopAdmin
+  },
+  {
+    path: '/shops/create',
+    name: 'shop-create',
+    component: CreateShop
+  },
+  {
+    path: '/shops/admin/:id',
+    name: 'shop-admin-edit',
+    component: EditShop,
+    props: (route: any) => ({ id: route.params.id })
+  },
+  {
+    path: '/about',
+    name: 'about',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  }
 ];
 
 // @ts-ignore
 const router = new VueRouter({
-	routes
+  routes
 });
 
 export default router;
