@@ -6,6 +6,7 @@ import Products from '@/features/products/Products.vue';
 import ProductAdmin from '@/features/products/ProductAdmin.vue';
 import ShopAdmin from '../views/ShopAdmin.vue';
 import EditShop from '../views/EditShop.vue';
+import Shops from '@/features/shops/Shops.vue';
 import Bins from '../views/Bins.vue';
 import CreateShop from '../features/shops/AddShop.vue';
 
@@ -36,6 +37,11 @@ const routes = [
 		path: '/shops/create',
 		name: 'shop-create',
 		component: CreateShop
+	},
+	{
+		path: '/locations',
+		name: 'shops',
+		component: Shops
 	},
 	{
 		path: '/bins',

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <b-navbar toggleable="lg" type="light" sticky class="bg-white shadow-sm">
-      <b-navbar-brand tag="h1" class="mb-0" :to="{name : 'home'}">The Recycle Guide</b-navbar-brand>
+      <b-navbar-brand tag="h1" class="mb-0" :to="{name : 'home'}">No More Bin Days</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -12,7 +12,7 @@
             <b-dropdown-item :to="{name : 'locations'}">Categories</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Locations" right>
-            <b-dropdown-item>A-Z</b-dropdown-item>
+            <b-dropdown-item :to="{name : 'shops'}">A-Z</b-dropdown-item>
             <b-dropdown-item>Categories</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item :to="{name : 'bins' }">Bins</b-nav-item>

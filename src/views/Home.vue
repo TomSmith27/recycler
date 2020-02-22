@@ -18,7 +18,12 @@
       <div class="container">
         <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null && !isLoading">Can't be recycled</b-alert>
         <div class="shops">
-          <b-card class="shadow mb-2" :title="s.name" :key="s.id" v-for="s in filteredShops">
+          <b-card class="shadow mb-2" :key="s.id" v-for="s in filteredShops">
+            <div class="d-flex align-items-center mb-2 justify-content-between">
+              <b-card-title class="mb-0">{{s.name}}</b-card-title>
+              <shop-status :shop="s"></shop-status>
+            </div>
+
             <b-card-text>
               <a v-if="!s.address.includes('See website')" target="_blank" :href="mapUrl(s)">{{s.address}}</a>
               <span v-else>{{s.address}}</span>
@@ -62,7 +67,7 @@
 
 <script lang="ts">
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import ShopStatus from '@/components/ShopStatus.vue';
 import db from '@/firebase/firebase';
 import Vue from 'vue';
 import {
@@ -79,7 +84,7 @@ import { Product } from '@/features/products/Product';
 import { useProducts } from '@/features/products/useProducts'
 export default createComponent({
   components: {
-    HelloWorld
+    ShopStatus
   },
   setup(props, context) {
     const productService = new ProductsService();
