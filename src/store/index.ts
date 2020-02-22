@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import firebase from 'firebase';
 
 Vue.use(Vuex);
 
@@ -15,13 +16,24 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
-		LOGIN({ commit }) {
-			window.localStorage.setItem('recycle-user', 'poppy');
-			commit('setUser', {
-				email: 'Poppy'
-			});
+		LOGIN({ commit }, payload) {
+			firebase
+				.auth()
+				.signInWithEmailAndPassword(payload.email, payload.password)
+				.then((response) => {
+					if (response.user && response.user.email) {
+						window.localStorage.setItem('recycle-user', response.user.email);
+						commit('setUser', response.user);
+					}
+				})
+				.catch(function(error) {
+					// Handle Errors here.
+					alert(error);
+					// ...
+				});
 		},
 		LOGOUT({ commit }) {
+			firebase.auth().signOut();
 			window.localStorage.removeItem('recycle-user');
 			commit('setUser', {
 				email: ''

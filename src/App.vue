@@ -101,9 +101,10 @@ export default Vue.extend({
   methods: {
     logout() {
       this.$store.dispatch('LOGOUT')
+      this.$router.push({ name: 'home' })
     },
     async onSubmit() {
-      await this.$store.dispatch('LOGIN')
+      await this.$store.dispatch('LOGIN', this.form)
       this.$bvModal.hide('login-modal')
     },
 
