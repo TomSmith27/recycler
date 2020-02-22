@@ -5,7 +5,7 @@
       <b-table :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sticky-header="80vh" striped hover :items="shops" :fields="fields">
         <template v-slot:cell(products)="{item}">
           <div>
-            <b-badge :key="product" v-for="product in item.products" variant="primary" class="ml-1">{{product}}</b-badge>
+            <b-badge :key="product" v-for="product in item.products" variant="primary" class="ml-1 white-space-norml">{{product}}</b-badge>
           </div>
         </template>
 

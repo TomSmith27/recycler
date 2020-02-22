@@ -12,10 +12,14 @@
             <b-dropdown-item :to="{name : 'locations'}">Categories</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown text="Locations" right>
-            <b-dropdown-item :to="{name : 'shops'}">A-Z</b-dropdown-item>
+            <b-dropdown-item class="d-none d-xl-block" :to="{name : 'shops'}">A-Z</b-dropdown-item>
             <b-dropdown-item>Categories</b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item :to="{name : 'bins' }">Bins</b-nav-item>
+          <b-nav-item :to="{name : 'about' }">About</b-nav-item>
+          <b-nav-item :to="{name : 'news' }">News</b-nav-item>
+          <b-nav-item :to="{name : 'tips' }">Did you know?</b-nav-item>
+
           <!--    <b-nav-item href="#">Blogs</b-nav-item>
           <b-nav-item href="#">Bins</b-nav-item>
           <b-nav-item href="#">Composting</b-nav-item>-->

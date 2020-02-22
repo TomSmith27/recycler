@@ -37,8 +37,6 @@ export default createComponent({
         let closeTime = new Date();
         let closeTimeParts = openingTimes.to.split(':');
         closeTime.setHours(Number.parseInt(closeTimeParts[0]), Number.parseInt(closeTimeParts[1]), 0);
-
-        console.log(openTime, closeTime)
         if (currentD > openTime && currentD < closeTime) {
           return true;
         }
@@ -50,12 +48,11 @@ export default createComponent({
     })
 
     const status = computed(() => {
-      console.log('test')
       if (isOpen.value) {
-        return { variant: 'success', text: 'Open' }
+        return { variant: 'primary', text: 'Open' }
       }
 
-      return { variant: 'danger', text: 'closed' }
+      return { variant: 'danger', text: 'Closed' }
     })
 
 

@@ -8,12 +8,16 @@
     </div>
     <div v-else class="d-flex justify-content-center flex-column align-items-center overflow-auto home" :class="{'offset-search' : filteredShops.length == 0}">
       <div class="d-flex justify-content-center align-items-center flex-column w-100 mb-3">
-        <div class="d-flex justify-content-center align-items-center w-100">
+        <div class="d-flex justify-content-center align-items-center w-100 mb-1">
           <h3>Where can I recycle</h3>
         </div>
-        <b-select class="mx-2 w-75" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
+        <b-select class="mx-2 w-75 mb-2" v-model="selectedProduct" :options="orderedProducts" value-field="name" text-field="name"></b-select>
         <h3>in Sheffield?</h3>
       </div>
+      <b-alert :show="filteredShops.length == 0" variant="success" class="text-center m-2">
+        <b-icon icon="info-square" class="mr-3" scale="1.5"></b-icon>
+        <strong>Top Tip</strong> : Did you know that corks can be composted?
+      </b-alert>
 
       <div class="container">
         <b-alert class="text-center" variant="danger" :show="filteredShops.length == 0 && selectedProduct != null && !isLoading">Can't be recycled</b-alert>
@@ -28,9 +32,16 @@
               <a v-if="!s.address.includes('See website')" target="_blank" :href="mapUrl(s)">{{s.address}}</a>
               <span v-else>{{s.address}}</span>
             </b-card-text>
-            <div>
-              <p>Products:</p>
-              <b-badge :key="product.name" v-for="product in s.products" variant="primary" class="m-1 white-space-norml">{{product}}</b-badge>
+            <div class="pb-2">
+              <button class="btn btn-outline-primary btn-block" v-b-toggle="`products-${s.id}`">
+                What else can I recycle here?
+                <b-icon-chevron-compact-down />
+              </button>
+              <b-collapse :id="`products-${s.id}`" class="border-top-0 border border-primary p-2">
+                <div>
+                  <b-badge :key="product.name" v-for="product in s.products" variant="primary" class="m-1 white-space-norml">{{product}}</b-badge>
+                </div>
+              </b-collapse>
             </div>
             <div>
               <button class="btn btn-outline-primary btn-block" v-b-toggle="`opening-hours-${s.id}`">
@@ -147,6 +158,6 @@ export default createComponent({
   margin-top: 5vh;
 }
 .offset-search {
-  margin-top: 45vh;
+  margin-top: 25vh;
 }
 </style>
