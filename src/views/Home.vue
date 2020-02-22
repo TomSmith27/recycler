@@ -37,10 +37,8 @@
                 What else can I recycle here?
                 <b-icon-chevron-compact-down />
               </button>
-              <b-collapse :id="`products-${s.id}`" class="border-top-0 border border-primary p-2">
-                <div>
-                  <b-badge :key="product.name" v-for="product in s.products" variant="primary" class="m-1 white-space-norml">{{product}}</b-badge>
-                </div>
+              <b-collapse :id="`products-${s.id}`" class="border-top-0 border border-primary">
+                <product-badges class="p-2" :products="s.products" />
               </b-collapse>
             </div>
             <div>
@@ -48,8 +46,8 @@
                 Opening Hours
                 <b-icon-chevron-compact-down />
               </button>
-              <b-collapse :id="`opening-hours-${s.id}`" class="border-top-0 border border-primary p-2">
-                <div class="d-flex justify-content-center">
+              <b-collapse :id="`opening-hours-${s.id}`" class="border-top-0 border border-primary">
+                <div class="d-flex justify-content-center p-2">
                   <div v-if="s.is247">
                     <em>24/7</em>
                   </div>
@@ -66,9 +64,6 @@
                 </div>
               </b-collapse>
             </div>
-
-            <!--   <a href="#" class="card-link">Card link</a>
-            <b-link href="#" class="card-link">Another link</b-link>-->
           </b-card>
         </div>
       </div>
@@ -93,9 +88,11 @@ import ShopsService from '../services/shopsService';
 import { Shop } from '../features/shops/Shop';
 import { Product } from '@/features/products/Product';
 import { useProducts } from '@/features/products/useProducts'
+import ProductBadges from "@/components/ProductBadges.vue";
 export default createComponent({
   components: {
-    ShopStatus
+    ShopStatus,
+    ProductBadges
   },
   setup(props, context) {
     const productService = new ProductsService();

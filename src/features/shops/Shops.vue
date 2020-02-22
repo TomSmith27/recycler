@@ -4,19 +4,17 @@
       <h1>All Locations</h1>
       <b-table :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" sticky-header="80vh" striped hover :items="shops" :fields="fields">
         <template v-slot:cell(products)="{item}">
-          <div>
-            <b-badge :key="product" v-for="product in item.products" variant="primary" class="ml-1 white-space-norml">{{product}}</b-badge>
-          </div>
+          <product-badges :products="item.products" />
         </template>
 
         <template v-slot:cell(openingTimes)="{item}">
-          <div>
+          <div style="width : 300px">
             <button class="btn btn-outline-primary btn-block" v-b-toggle="`opening-hours-${item.id}`">
               Opening Hours
               <b-icon-chevron-compact-down />
             </button>
-            <b-collapse :id="`opening-hours-${item.id}`" class="border-top-0 border border-primary p-2 bg-white">
-              <div class="d-flex justify-content-center">
+            <b-collapse :id="`opening-hours-${item.id}`" class="border-top-0 border border-primary bg-white">
+              <div class="d-flex justify-content-cente p-2">
                 <div v-if="item.is247">
                   <em>24/7</em>
                 </div>
@@ -43,8 +41,10 @@
 import { createComponent, ref, onMounted } from '@vue/composition-api';
 import ShopsService from '@/services/shopsService';
 import { Shop } from './Shop';
+import ProductBadges from '@/components/ProductBadges.vue'
 export default createComponent({
   components: {
+    ProductBadges
   },
   setup() {
     const shopService = new ShopsService();
