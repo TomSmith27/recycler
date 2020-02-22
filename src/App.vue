@@ -15,6 +15,7 @@
             <b-dropdown-item>A-Z</b-dropdown-item>
             <b-dropdown-item>Categories</b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item :to="{name : 'bins' }">Bins</b-nav-item>
           <!--    <b-nav-item href="#">Blogs</b-nav-item>
           <b-nav-item href="#">Bins</b-nav-item>
           <b-nav-item href="#">Composting</b-nav-item>-->
